@@ -1,80 +1,56 @@
 import 'bootstrap/dist/css/bootstrap.css';
-import {Button, Card, Col, Container, Form, FormControl, InputGroup, Row} from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
+import {EntryInput} from "./components/EntryInput";
+import {EntriesList} from "./components/EntriesList";
+import {TodoListTitle} from "./components/TodoListTitle";
+import {ListFilters} from "./components/ListFilters";
+import {useState} from "react";
 
 
-const EntryInput = () => {
-    return <InputGroup className="my-3">
-        <FormControl placeholder="TODO Entry"/>
-        <Button variant="outline-secondary">+</Button>
-    </InputGroup>
-}
+const App = () => {
 
-const EntryItem = ({title, completed = false}) => {
-    return <InputGroup className="mb-3">
-        <InputGroup.Checkbox checked={completed}/>
-        <FormControl disabled={completed} placeholder={title} className={completed ? 'text-decoration-line-through' : ''}/>
-        <Button disabled={completed} variant="outline-secondary">x</Button>
-    </InputGroup>;
+    const [list, setList] = useState([
+        {
+            title: "Beautiful UI",
+            taken: true,
+            archived: false,
+        },
+        {
+            title: "Fantastic Library",
+            taken: false,
+            archived: false,
+        },
+        {
+            title: "Awesome Instrument",
+            taken: true,
+            archived: false,
+        },
+    ]);
 
-}
+    const insertNewListElement = text => {
+        setList([
+            ...list,
+            {
+                title: text,
+                taken: false,
+                archived: false
+            }
+        ]);
+    }
 
-const EntriesList = () => {
-    return <>
-        <EntryItem title="Beautiful UI" completed/>
-        <EntryItem title="Fantastic Library"/>
-        <EntryItem title="Awesome Instrument" completed/>
-        <EntryItem title="..."/>
-    </>
-}
-
-const TodoListTitle = () => {
-    return <Card className="mb-5">
-        <Card.Header>All you need is...</Card.Header>
-        <Card.Body>
-            <Card.Title>Remember to take all you need</Card.Title>
-        </Card.Body>
-    </Card>;
-}
-
-const ListFilters = () => {
-    return <div className="mb-3">
-        <Form.Label className="mx-3">
-            Filters:
-        </Form.Label>
-        <Form.Check
-            inline
-            type="radio"
-            name="list-filter"
-            label="all"
-            checked
-        />
-        <Form.Check
-            inline
-            type="radio"
-            name="list-filter"
-            label="taken"
-        />
-        <Form.Check
-            inline
-            type="radio"
-            name="list-filter"
-            label="to take"
-        />
-    </div>
-}
-
-const App = () => (
-    <Container className="mt-3">
-        <Row className="justify-content-center">
-            <Col md={6} className="border border-2 p-3">
-                <TodoListTitle/>
-                <EntryInput/>
-                <ListFilters/>
-                <hr/>
-                <EntriesList/>
-            </Col>
-        </Row>
-    </Container>
-);
+    return (
+        <Container className="mt-3">
+            <Row className="justify-content-center">
+                <Col md={6} className="border border-2 p-3">
+                    <TodoListTitle/>
+                    <EntryInput handleNewElementInput={insertNewListElement}/>
+                    <ListFilters/>
+                    <hr/>
+                    <EntriesList list={list}/>
+                </Col>
+            </Row>
+        </Container>
+    );
+};
 
 export default App;
