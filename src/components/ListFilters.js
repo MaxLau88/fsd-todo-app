@@ -1,6 +1,6 @@
 import {Form} from "react-bootstrap";
 
-export const ListFilters = () => {
+export const ListFilters = ({handleFilter}) => {
     return <div className="mb-3">
         <Form.Label className="mx-3">
             Filters:
@@ -10,19 +10,22 @@ export const ListFilters = () => {
             type="radio"
             name="list-filter"
             label="all"
-            checked
+            defaultChecked
+            onChange={() => handleFilter(null)}
         />
         <Form.Check
             inline
             type="radio"
             name="list-filter"
             label="taken"
+            onChange={() => handleFilter(true)}
         />
         <Form.Check
             inline
             type="radio"
             name="list-filter"
             label="to take"
+            onChange={() => handleFilter(false)}
         />
     </div>
 }
